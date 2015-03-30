@@ -3,7 +3,7 @@ window.Obstacle = (function() {
 
 	var WORLD_HEIGHT = 69;
 	var SPEED        = 20;
-	var GAPHEIGHT    = 18;
+	var GAPHEIGHT    = 25;
 	var GAPWIDTH     = 10;
 
 	var Obstacle = function(el, game) {
