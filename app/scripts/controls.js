@@ -1,4 +1,3 @@
-
 window.Controls = (function() {
     'use strict';
 

@@ -10,11 +10,12 @@ window.Player = (function() {
 	var HEIGHT = 5;
 	var INITIAL_POSITION_X = 30;
 	var INITIAL_POSITION_Y = 25;
-	var GRAVITY = 20;
 	var JUMPSPEED = 60;
 
 	var Player = function(el, game) {
 		this.el = el;
+		this.width = WIDTH;
+		this.height = HEIGHT;
 		this.game = game;
 		this.pos = { x: 0, y: 0 };
 	};

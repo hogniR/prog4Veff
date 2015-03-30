@@ -10,6 +10,9 @@ window.Game = (function() {
 	var Game = function(el) {
 		this.el = el;
 		this.player = new window.Player(this.el.find('.Player'), this);
+		this.obstacleHi = new window.Obstacle(this.el.find('.ObstacleHi'), this);
+		this.obstacleLo = new window.Obstacle(this.el.find('.ObstacleLo'), this);
+		this.gapMiddle =  new window.Obstacle(this.el.find('.GapMiddle'), this);//debug
 		this.isPlaying = false;
 
 		// Cache a bound onFrame since we need it each frame.
@@ -33,7 +36,10 @@ window.Game = (function() {
 
 		// Update game entities.
 		this.player.onFrame(delta);
-
+		this.obstacleHi.onFrame(delta, 'hi');
+		this.obstacleLo.onFrame(delta, 'lo');
+		this.gapMiddle.onFrame(delta, 'gapM');
+		this.obstacleCollision();
 		// Request next frame.
 		window.requestAnimationFrame(this.onFrame);
 	};
@@ -73,6 +79,36 @@ window.Game = (function() {
 					scoreboardEl.removeClass('is-visible');
 					that.start();
 				});
+	};
+
+	Game.prototype.obstacleCollision = function() {
+		//check if player hit the higher obstacle
+		//check if the left top of the player hits highter obstacle
+		if(this.player.pos.y < this.obstacleHi.higherLeft.y &&
+			this.player.pos.x > this.obstacleHi.higherLeft.x &&
+			this.player.pos.x < this.obstacleHi.higherRight.x ) {
+			this.gameover();
+		}//check if the right top of the player hits higher obstacle
+		else if(this.player.pos.y < this.obstacleHi.higherLeft.y &&
+			(this.player.pos.x + this.player.width) > this.obstacleHi.higherLeft.x &&
+			(this.player.pos.x + this.player.width) < this.obstacleHi.higherRight.x ) {
+			console.log("LL x: " +  this.obstacleLo.lowerLeft.x);
+			console.log("player x " + this.player.pos.x);
+			this.gameover();
+		}
+		//check if player hit the lower obstacle
+		//check if the left lower of the player hits lower obstacle
+		else if((this.player.pos.y + this.player.height) > this.obstacleLo.lowerLeft.y &&
+			this.player.pos.x > this.obstacleLo.lowerLeft.x &&
+			this.player.pos.x < this.obstacleLo.lowerRight.x) 
+		{
+			this.gameover();
+		}//check if the right lower of the player hits lower obstacle
+		else if((this.player.pos.y + this.player.height) > this.obstacleLo.lowerLeft.y &&
+			(this.player.pos.x + this.player.width) > this.obstacleLo.lowerLeft.x &&
+			(this.player.pos.x + this.player.width) < this.obstacleLo.lowerRight.x) {
+			this.gameover();
+		}
 	};
 
 	/**

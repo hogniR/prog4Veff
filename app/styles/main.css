@@ -7,6 +7,33 @@
 	background: blue;
 }
 
+.ObstacleHi {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 10em;
+	height: 10em;
+	background: black;
+}
+
+.ObstacleLo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 10em;
+	height: 10em;
+	background: black;
+}
+
+.GapMiddle {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 5px;
+	height: 5px;
+	background: green;
+}
+
 .Scoreboard {
 	position: absolute;
 	left: 50%;
