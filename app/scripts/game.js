@@ -8,12 +8,13 @@ window.Game = (function() {
 	 * @constructor
 	 */
 	var Game = function(el) {
+		this.obstacle1Made = false;
+		this.obstacle2Made = false;
 		this.el = el;
 		this.player = new window.Player(this.el.find('.Player'), this);
-		this.obstacleHi = new window.Obstacle(this.el.find('.ObstacleHi'), this);
-		this.obstacleLo = new window.Obstacle(this.el.find('.ObstacleLo'), this);
-		this.gapMiddle =  new window.Obstacle(this.el.find('.GapMiddle'), this);//debug
 		this.isPlaying = false;
+		this.obstacleHi = undefined;
+		this.obstacleLo = undefined;
 
 		// Cache a bound onFrame since we need it each frame.
 		this.onFrame = this.onFrame.bind(this);
@@ -24,6 +25,31 @@ window.Game = (function() {
 	 * entity to update itself.
 	 */
 	Game.prototype.onFrame = function() {
+		if(!this.obstacle1Made){
+			var randomNr = ((Math.random() * 100) % 57.6);
+			if(randomNr < (25/2)) {
+				randomNr += 25/2;
+			}
+			else if(randomNr > (57.6 - (25/2))) {
+				randomNr -= 25/2;
+			}
+			this.obstacleHi = new window.Obstacle(this.el.find('.ObstacleHi'), this, randomNr);
+			this.obstacleLo = new window.Obstacle(this.el.find('.ObstacleLo'), this, randomNr);
+			this.obstacle1Made = true;
+		}
+
+		if(this.obstacleLo.lowerRight.x < 0) {
+			var randomNr = ((Math.random() * 100) % 57.6);
+			if(randomNr < (25/2)) {
+				randomNr += 25/2;
+			}
+			else if(randomNr > (57.6 - (25/2))) {
+				randomNr -= 25/2;
+			}
+			this.obstacleHi = new window.Obstacle(this.el.find('.ObstacleHi'), this, randomNr);
+			this.obstacleLo = new window.Obstacle(this.el.find('.ObstacleLo'), this, randomNr);	
+		}
+
 		// Check if the game loop should stop.
 		if (!this.isPlaying) {
 			return;
@@ -38,7 +64,6 @@ window.Game = (function() {
 		this.player.onFrame(delta);
 		this.obstacleHi.onFrame(delta, 'hi');
 		this.obstacleLo.onFrame(delta, 'lo');
-		this.gapMiddle.onFrame(delta, 'gapM');
 		this.obstacleCollision();
 		// Request next frame.
 		window.requestAnimationFrame(this.onFrame);

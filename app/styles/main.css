@@ -4,8 +4,7 @@
 	left: 0;
 	width: 5em;
 	height: 5em;
-	background-image: url("player.png");
-	background-size: 100%;
+	background: blue;
 }
 
 .ObstacleHi {
@@ -24,15 +23,6 @@
 	width: 10em;
 	height: 10em;
 	background: black;
-}
-
-.GapMiddle {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 5px;
-	height: 5px;
-	background: green;
 }
 
 .Scoreboard {
