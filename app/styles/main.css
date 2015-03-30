@@ -4,7 +4,8 @@
 	left: 0;
 	width: 5em;
 	height: 5em;
-	background: blue;
+	background-image: url("player.png");
+	background-size: 100%;
 }
 
 .ObstacleHi {
