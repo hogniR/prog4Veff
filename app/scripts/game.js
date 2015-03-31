@@ -9,6 +9,8 @@ window.Game = (function() {
 	var Game = function(el) {
 		this.obstacle1Made = false;
 		this.obstacle2Made = false;
+		this.obstacle1Scored = false;
+		this.obstacle2Scored = false;
 		this.el = el;
 		this.player = new window.Player(this.el.find('.Player'), this);
 		this.obstacleFrequency = this.WORLD_WIDTH / 2;
@@ -17,6 +19,7 @@ window.Game = (function() {
 		this.obstacleLo1 = undefined;
 		this.obstacleHi2 = undefined;
 		this.obstacleLo2 = undefined;
+		this.score = -1;
 		// Cache a bound onFrame since we need it each frame.
 		this.onFrame = this.onFrame.bind(this);
 	};
@@ -32,6 +35,7 @@ window.Game = (function() {
 		}
 		
 		this.spawnObstacles();
+		this.updateScore();
 
 		// Calculate how long since last frame in seconds.
 		var now = +new Date() / 1000,
@@ -43,15 +47,35 @@ window.Game = (function() {
 		if(this.obstacle1Made) {
 			this.obstacleHi1.onFrame(delta, 'hi');
 			this.obstacleLo1.onFrame(delta, 'lo');
-			this.obstacleCollision(this.obstacleHi1, this.obstacleLo1);			
+			this.obstacleCollision(this.obstacleHi1, this.obstacleLo1);
 		}
 		if(this.obstacle2Made) {
 			this.obstacleHi2.onFrame(delta, 'hi');
 			this.obstacleLo2.onFrame(delta, 'lo');
-			this.obstacleCollision(this.obstacleHi2, this.obstacleLo2);	
+			this.obstacleCollision(this.obstacleHi2, this.obstacleLo2);
 		}
 		// Request next frame.
 		window.requestAnimationFrame(this.onFrame);
+	};
+
+	Game.prototype.updateScore = function () {
+		if((this.obstacle1Made && !this.obstacle1Scored &&
+			this.player.pos.x > this.obstacleHi1.higherRight.x )){
+			
+			console.log(this.player.pos.x);
+			console.log(this.obstacleHi1.higherRight.x);
+			this.score++;
+			this.obstacle1Scored = true;
+			console.log("score: " + this.score);
+		}
+		else if(this.obstacle2Made && !this.obstacle2Scored &&
+			this.player.pos.x > this.obstacleHi2.higherRight.x) {
+			
+			this.score++;
+			this.obstacle2Scored = true;
+
+			console.log("score: " + this.score);
+		}
 	};
 
 	Game.prototype.spawnObstacles = function () {
@@ -61,32 +85,36 @@ window.Game = (function() {
 			this.obstacleHi1 = new window.Obstacle(this.el.find('.ObstacleHi1'), this, randomNr);
 			this.obstacleLo1 = new window.Obstacle(this.el.find('.ObstacleLo1'), this, randomNr);
 			this.obstacle1Made = true;
+			this.obstacle1Scored = false;
 		}
-		if(!this.obstacle2Made && 
-			(this.obstacleHi1.higherRight.x < this.obstacleFrequency) && 
+		if(!this.obstacle2Made &&
+			(this.obstacleHi1.higherRight.x < this.obstacleFrequency) &&
 			(this.obstacleHi1.higherRight.x !== 0)) {
 			
 			randomNr = this.getRandomNr();
 			this.obstacleHi2 = new window.Obstacle(this.el.find('.ObstacleHi2'), this, randomNr);
 			this.obstacleLo2 = new window.Obstacle(this.el.find('.ObstacleLo2'), this, randomNr);
 			this.obstacle2Made = true;
+			this.obstacle2Scored = false;
 		}
 
-		if(this.obstacle2Made && 
-			this.obstacleLo2.lowerLeft.x < 0 && 
+		if(this.obstacle2Made &&
+			this.obstacleLo2.lowerLeft.x < 0 &&
 			this.obstacleHi1.higherRight.x < this.obstacleFrequency) {
 			randomNr = this.getRandomNr();
 			this.obstacleHi2 = new window.Obstacle(this.el.find('.ObstacleHi2'), this, randomNr);
-			this.obstacleLo2 = new window.Obstacle(this.el.find('.ObstacleLo2'), this, randomNr);			
+			this.obstacleLo2 = new window.Obstacle(this.el.find('.ObstacleLo2'), this, randomNr);
+			this.obstacle2Scored = false;
 		}
-		if(this.obstacle2Made && 
-			this.obstacleLo1.lowerLeft.x < 0 && 
+		if(this.obstacle2Made &&
+			this.obstacleLo1.lowerLeft.x < 0 &&
 			this.obstacleHi2.higherRight.x < this.obstacleFrequency) {
 			randomNr = this.getRandomNr();
 			this.obstacleHi1 = new window.Obstacle(this.el.find('.ObstacleHi1'), this, randomNr);
 			this.obstacleLo1 = new window.Obstacle(this.el.find('.ObstacleLo1'), this, randomNr);
+			this.obstacle1Scored = false;
 		}
-	}
+	};
 
 	//returns a random number that fits in the world size
 	Game.prototype.getRandomNr = function () {
@@ -98,7 +126,7 @@ window.Game = (function() {
 			randomNr -= 25/2;
 		}
 		return randomNr;
-	}
+	};
 	/**
 	 * Starts a new game.
 	 */
@@ -116,6 +144,7 @@ window.Game = (function() {
 	 */
 	Game.prototype.reset = function() {
 		this.player.reset();
+		this.score = 0;
 	};
 
 	/**
