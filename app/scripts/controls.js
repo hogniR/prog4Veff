@@ -18,6 +18,7 @@ window.Controls = (function() {
      * and touch devices.
      * @constructor
      */
+    var animate = true;
     var Controls = function() {
         this._didJump = false;
         this.keys = {};
@@ -30,8 +31,19 @@ window.Controls = (function() {
         // Only jump if space wasn't pressed.
         //if (e.keyCode === 32 && !this.keys.space) {
         this._didJump = true;
+            
         //}
-
+        if(animate){
+            $('.Player').animate({
+                'background-position-y': '0px'
+            }, 0);
+            animate = false;
+        }else{
+            $('.Player').animate({
+                'background-position-y': '-80px'
+            }, 0);
+            animate = true;
+        }
         // Remember that this button is down.
         if (e.keyCode in KEYS) {
             var keyName = KEYS[e.keyCode];
