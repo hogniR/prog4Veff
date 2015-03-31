@@ -18,6 +18,8 @@ window.Player = (function() {
 
 	var Player = function(el, game) {
 		this.el = el;
+		this.width = WIDTH;
+		this.height = HEIGHT;
 		this.game = game;
 		this.pos = { x: 0, y: 0 };
 	};
