@@ -2,9 +2,12 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 5em;
-	height: 5em;
+	/*width: 5em;
+	height: 5em;*/
+	width: 70px;
+	height: 70px;
 	background-image: url("../images/player.png");
+	background-position: 0px 0px;
 }
 
 .ObstacleHi {
