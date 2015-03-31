@@ -25,8 +25,9 @@ window.Game = (function() {
 	 * entity to update itself.
 	 */
 	Game.prototype.onFrame = function() {
+		var randomNr;
 		if(!this.obstacle1Made){
-			var randomNr = ((Math.random() * 100) % 57.6);
+			randomNr = ((Math.random() * 100) % 57.6);
 			if(randomNr < (25/2)) {
 				randomNr += 25/2;
 			}
@@ -39,7 +40,7 @@ window.Game = (function() {
 		}
 
 		if(this.obstacleLo.lowerRight.x < 0) {
-			var randomNr = ((Math.random() * 100) % 57.6);
+			randomNr = ((Math.random() * 100) % 57.6);
 			if(randomNr < (25/2)) {
 				randomNr += 25/2;
 			}
@@ -47,7 +48,7 @@ window.Game = (function() {
 				randomNr -= 25/2;
 			}
 			this.obstacleHi = new window.Obstacle(this.el.find('.ObstacleHi'), this, randomNr);
-			this.obstacleLo = new window.Obstacle(this.el.find('.ObstacleLo'), this, randomNr);	
+			this.obstacleLo = new window.Obstacle(this.el.find('.ObstacleLo'), this, randomNr);
 		}
 
 		// Check if the game loop should stop.
@@ -117,16 +118,13 @@ window.Game = (function() {
 		else if(this.player.pos.y < this.obstacleHi.higherLeft.y &&
 			(this.player.pos.x + this.player.width) > this.obstacleHi.higherLeft.x &&
 			(this.player.pos.x + this.player.width) < this.obstacleHi.higherRight.x ) {
-			console.log("LL x: " +  this.obstacleLo.lowerLeft.x);
-			console.log("player x " + this.player.pos.x);
 			this.gameover();
 		}
 		//check if player hit the lower obstacle
 		//check if the left lower of the player hits lower obstacle
 		else if((this.player.pos.y + this.player.height) > this.obstacleLo.lowerLeft.y &&
 			this.player.pos.x > this.obstacleLo.lowerLeft.x &&
-			this.player.pos.x < this.obstacleLo.lowerRight.x) 
-		{
+			this.player.pos.x < this.obstacleLo.lowerRight.x) {
 			this.gameover();
 		}//check if the right lower of the player hits lower obstacle
 		else if((this.player.pos.y + this.player.height) > this.obstacleLo.lowerLeft.y &&
