@@ -30,6 +30,31 @@ window.Game = (function() {
 		if (!this.isPlaying) {
 			return;
 		}
+		
+		this.spawnObstacles();
+
+		// Calculate how long since last frame in seconds.
+		var now = +new Date() / 1000,
+				delta = now - this.lastFrame;
+		this.lastFrame = now;
+
+		// Update game entities.
+		this.player.onFrame(delta);
+		if(this.obstacle1Made) {
+			this.obstacleHi1.onFrame(delta, 'hi');
+			this.obstacleLo1.onFrame(delta, 'lo');
+			this.obstacleCollision(this.obstacleHi1, this.obstacleLo1);			
+		}
+		if(this.obstacle2Made) {
+			this.obstacleHi2.onFrame(delta, 'hi');
+			this.obstacleLo2.onFrame(delta, 'lo');
+			this.obstacleCollision(this.obstacleHi2, this.obstacleLo2);	
+		}
+		// Request next frame.
+		window.requestAnimationFrame(this.onFrame);
+	};
+
+	Game.prototype.spawnObstacles = function () {
 		var randomNr;
 		if(!this.obstacle1Made){
 			randomNr = this.getRandomNr();
@@ -61,27 +86,7 @@ window.Game = (function() {
 			this.obstacleHi1 = new window.Obstacle(this.el.find('.ObstacleHi1'), this, randomNr);
 			this.obstacleLo1 = new window.Obstacle(this.el.find('.ObstacleLo1'), this, randomNr);
 		}
-
-		// Calculate how long since last frame in seconds.
-		var now = +new Date() / 1000,
-				delta = now - this.lastFrame;
-		this.lastFrame = now;
-
-		// Update game entities.
-		this.player.onFrame(delta);
-		if(this.obstacle1Made) {
-			this.obstacleHi1.onFrame(delta, 'hi');
-			this.obstacleLo1.onFrame(delta, 'lo');
-			this.obstacleCollision(this.obstacleHi1, this.obstacleLo1);			
-		}
-		if(this.obstacle2Made) {
-			this.obstacleHi2.onFrame(delta, 'hi');
-			this.obstacleLo2.onFrame(delta, 'lo');
-			this.obstacleCollision(this.obstacleHi2, this.obstacleLo2);	
-		}
-		// Request next frame.
-		window.requestAnimationFrame(this.onFrame);
-	};
+	}
 
 	//returns a random number that fits in the world size
 	Game.prototype.getRandomNr = function () {
