@@ -2,15 +2,16 @@ window.Obstacle = (function() {
 	'use strict';
 
 	var WORLD_HEIGHT = 69;
-	var SPEED        = 20;
+	var SPEED        = 25;
 	var GAPHEIGHT    = 25;
 	var GAPWIDTH     = 10;
+	var WORLD_LENGHT = 110;
 
 	var Obstacle = function(el, game, randomNr) {
 		this.el   = el;
 		this.game = game;
 		this.isVisible = true;
-		this.gapPos = { x: 102.4, y: randomNr };	// ATH: Hard coded to be in the middle, need to make this a 
+		this.gapPos = { x: WORLD_LENGHT, y: randomNr };	// ATH: Hard coded to be in the middle, need to make this a 
 											// random number that is then mod with hight. Have it this 
 											// as the pssision of the middle of the gap
 		this.higherLeft  = { x: 0, y: 0};
