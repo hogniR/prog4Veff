@@ -7,7 +7,7 @@ window.Game = (function() {
 	 * @constructor
 	 */
 	var Game = function(el) {
-		//this.playMusic();
+		this.startMusic();
 		this.highScore = 0;
 		this.obstacle1Made = false;
 		this.obstacle2Made = false;
@@ -26,12 +26,26 @@ window.Game = (function() {
 		this.onFrame = this.onFrame.bind(this);
 	};
 
-	Game.prototype.playMusic = function() {
+	Game.prototype.startMusic = function() {
 		this.music = document.createElement('audio');
 		this.music.setAttribute('src', 'backgroundMusic.mp3');
 		this.music.setAttribute('autoplay', 'autoplay');
-		this.music.Play();//for other than Chrome its play()
+		this.music.play();//for other than Chrome its play()
+		this.musicIsOn = true;
 	};
+
+	Game.prototype.stopMusic = function () {
+		this.music.pause();
+		this.musicIsOn = false;
+	}
+
+	document.getElementById("mute").onclick = function () {
+		if(this.musicIsOn) {
+			this.stopMusic();
+		} else {
+			this.music.play();
+		}
+	}
 
 	/**
 	 * Runs every frame. Calculates a delta and allows each game
@@ -195,6 +209,7 @@ window.Game = (function() {
 		var that = this;
 		if(this.score > this.highScore) {
 			this.highScore = this.score;
+			document.getElementById('HighScore').textContent = '';
 			document.getElementById('Score').textContent = 'A New High Score: ' + this.highScore;
 		} else {
 			document.getElementById('HighScore').textContent = 'High Score: ' + this.highScore;
