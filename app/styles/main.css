@@ -10,6 +10,22 @@
 	background-position: 0px 0px;
 }
 
+.Background {
+	position: absolute;
+    width: 100%;
+    height: 57.6em;
+    background: transparent url("../images/background.jpg") 0 0px repeat-x;
+    /*background-size: 100% 100%;*/
+}
+
+/*.Grass {
+	position: absolute;
+    width: 100%;
+    height: 57.6em;
+    background: transparent url("../images/grass.png") 0 0px repeat-x;
+    /*background-size: 100% 100%;
+}*/
+
 .ObstacleHi1 {
 	position: absolute;
 	top: -100px;

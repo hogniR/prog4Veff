@@ -42,7 +42,6 @@ window.Game = (function() {
 		if (!this.isPlaying) {
 			return;
 		}
-		
 		this.spawnObstacles();
 		this.updateScore();
 
@@ -144,11 +143,21 @@ window.Game = (function() {
 		this.lastFrame = +new Date() / 1000;
 		window.requestAnimationFrame(this.onFrame);
 		this.isPlaying = true;
+		$('.Background').pan({fps: 30, speed: 1, dir: 'left'});
+		//$('.Grass').pan({fps: 30, speed: 3, dir: 'left'});
 	};
 
 	/**
 	 * Resets the state of the game so a new game can be started.
 	 */
+	/*Game.prototype._onKeyDown = function(e) {
+		if(e.keyCode === 32 || e.button === 0){
+			console.log("true");
+			this.isPlaying = true;
+		}
+		this.isPlaying = false;
+	}*/
+
 	Game.prototype.reset = function() {
 		this.player.reset();
 		this.score = 0;
@@ -180,6 +189,8 @@ window.Game = (function() {
 	 */
 	Game.prototype.gameover = function() {
 		this.isPlaying = false;
+		$('.Background').spStop();
+
 		// Should be refactored into a Scoreboard class.
 		var that = this;
 		if(this.score > this.highScore) {
