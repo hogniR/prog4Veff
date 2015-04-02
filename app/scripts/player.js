@@ -37,10 +37,10 @@ window.Player = (function() {
 		if(JUMPING > 0){
 			this.pos.y -= delta * JUMPSPEED * (JUMPING / JUMPINGDIV);
 			JUMPING--;
-		}else if(Controls.keys.up){
+		}else if(Controls.keys.space || Controls.mouse.mouse1){
 			JUMPING = 13;
 		}
-		if (Controls.keys.up) {
+		if (Controls.keys.space || Controls.mouse.mouse1) {
 			FALLING = 0;
 		}
 

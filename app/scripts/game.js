@@ -30,7 +30,6 @@ window.Game = (function() {
 		if (!this.isPlaying) {
 			return;
 		}
-		
 		this.spawnObstacles();
 
 		// Calculate how long since last frame in seconds.
@@ -43,12 +42,12 @@ window.Game = (function() {
 		if(this.obstacle1Made) {
 			this.obstacleHi1.onFrame(delta, 'hi');
 			this.obstacleLo1.onFrame(delta, 'lo');
-			this.obstacleCollision(this.obstacleHi1, this.obstacleLo1);			
+			this.obstacleCollision(this.obstacleHi1, this.obstacleLo1);
 		}
 		if(this.obstacle2Made) {
 			this.obstacleHi2.onFrame(delta, 'hi');
 			this.obstacleLo2.onFrame(delta, 'lo');
-			this.obstacleCollision(this.obstacleHi2, this.obstacleLo2);	
+			this.obstacleCollision(this.obstacleHi2, this.obstacleLo2);
 		}
 		// Request next frame.
 		window.requestAnimationFrame(this.onFrame);
@@ -62,8 +61,8 @@ window.Game = (function() {
 			this.obstacleLo1 = new window.Obstacle(this.el.find('.ObstacleLo1'), this, randomNr);
 			this.obstacle1Made = true;
 		}
-		if(!this.obstacle2Made && 
-			(this.obstacleHi1.higherRight.x < this.obstacleFrequency) && 
+		if(!this.obstacle2Made &&
+			(this.obstacleHi1.higherRight.x < this.obstacleFrequency) &&
 			(this.obstacleHi1.higherRight.x !== 0)) {
 			
 			randomNr = this.getRandomNr();
@@ -72,21 +71,21 @@ window.Game = (function() {
 			this.obstacle2Made = true;
 		}
 
-		if(this.obstacle2Made && 
-			this.obstacleLo2.lowerLeft.x < 0 && 
+		if(this.obstacle2Made &&
+			this.obstacleLo2.lowerLeft.x < 0 &&
 			this.obstacleHi1.higherRight.x < this.obstacleFrequency) {
 			randomNr = this.getRandomNr();
 			this.obstacleHi2 = new window.Obstacle(this.el.find('.ObstacleHi2'), this, randomNr);
-			this.obstacleLo2 = new window.Obstacle(this.el.find('.ObstacleLo2'), this, randomNr);			
+			this.obstacleLo2 = new window.Obstacle(this.el.find('.ObstacleLo2'), this, randomNr);
 		}
-		if(this.obstacle2Made && 
-			this.obstacleLo1.lowerLeft.x < 0 && 
+		if(this.obstacle2Made &&
+			this.obstacleLo1.lowerLeft.x < 0 &&
 			this.obstacleHi2.higherRight.x < this.obstacleFrequency) {
 			randomNr = this.getRandomNr();
 			this.obstacleHi1 = new window.Obstacle(this.el.find('.ObstacleHi1'), this, randomNr);
 			this.obstacleLo1 = new window.Obstacle(this.el.find('.ObstacleLo1'), this, randomNr);
 		}
-	}
+	};
 
 	//returns a random number that fits in the world size
 	Game.prototype.getRandomNr = function () {
@@ -98,7 +97,7 @@ window.Game = (function() {
 			randomNr -= 25/2;
 		}
 		return randomNr;
-	}
+	};2
 	/**
 	 * Starts a new game.
 	 */
@@ -109,11 +108,21 @@ window.Game = (function() {
 		this.lastFrame = +new Date() / 1000;
 		window.requestAnimationFrame(this.onFrame);
 		this.isPlaying = true;
+		$('.Background').pan({fps: 30, speed: 1, dir: 'left'});
+		//$('.Grass').pan({fps: 30, speed: 3, dir: 'left'});
 	};
 
 	/**
 	 * Resets the state of the game so a new game can be started.
 	 */
+	/*Game.prototype._onKeyDown = function(e) {
+		if(e.keyCode === 32 || e.button === 0){
+			console.log("true");
+			this.isPlaying = true;
+		}
+		this.isPlaying = false;
+	}*/
+
 	Game.prototype.reset = function() {
 		this.player.reset();
 	};
@@ -123,6 +132,7 @@ window.Game = (function() {
 	 */
 	Game.prototype.gameover = function() {
 		this.isPlaying = false;
+		$('.Background').spStop();
 
 		// Should be refactored into a Scoreboard class.
 		var that = this;
