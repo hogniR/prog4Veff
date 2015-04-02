@@ -12,9 +12,10 @@ window.Player = (function() {
 	var INITIAL_POSITION_Y = 25;
 	var JUMPSPEED = 60;
 	var FALLING = 0;
-	var FALLDIV = 7;
+	var FALLDIV = 10;
 	var JUMPING = 0;
 	var JUMPINGDIV = 7;
+	var ROTATION = 0;
 
 	var Player = function(el, game) {
 		this.el = el;
@@ -39,20 +40,23 @@ window.Player = (function() {
 			JUMPING--;
 		}else if(Controls.keys.space || Controls.mouse.mouse1){
 			JUMPING = 13;
-		}
-		if (Controls.keys.space || Controls.mouse.mouse1) {
 			FALLING = 0;
+			ROTATION = -40;
 		}
 
 		this.pos.y += delta * SPEED * (FALLING / FALLDIV);
 		FALLING++;
-
+		if(ROTATION > 60){
+			ROTATION = 60;
+		}else{
+			ROTATION += 3.5;
+		}
+		
 		this.checkCollisionWithBounds();
 
 		// Update UI
-		this.el.css('transform', 'translate(' + this.pos.x + 'em, ' + this.pos.y + 'em)');
-	};
-
+		this.el.css('transform', 'translate(' + this.pos.x + 'em, ' + this.pos.y + 'em)' + 'rotate(' + ROTATION + 'deg)');
+	}
 	Player.prototype.checkCollisionWithBounds = function() {
 		if (this.pos.x < 0 ||
 			this.pos.x + WIDTH > this.game.WORLD_WIDTH ||
