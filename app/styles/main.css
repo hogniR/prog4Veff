@@ -59,6 +59,16 @@
 	-webkit-transition: -webkit-transform 0.5s;
 }
 
+#Score {
+	margin-top:0.5em;
+	font-size: 4em;
+}
+
+#HighScore {
+	margin-top:0.5em;
+	font-size: 4em;
+}
+
 /**
 * Reset transform to animate it into the correct spot on the screen.
 */
@@ -67,7 +77,7 @@
 }
 
 .Scoreboard-restart {
-	margin-top: 20em;
+	margin-top: 2em;
 	font-size: inherit;
 	padding: 0.4em 1.5em;
 	border: 0.2em solid white;

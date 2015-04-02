@@ -7,6 +7,8 @@ window.Game = (function() {
 	 * @constructor
 	 */
 	var Game = function(el) {
+		//this.playMusic();
+		this.highScore = 0;
 		this.obstacle1Made = false;
 		this.obstacle2Made = false;
 		this.obstacle1Scored = false;
@@ -22,6 +24,13 @@ window.Game = (function() {
 		this.score = -1;
 		// Cache a bound onFrame since we need it each frame.
 		this.onFrame = this.onFrame.bind(this);
+	};
+
+	Game.prototype.playMusic = function() {
+		this.music = document.createElement('audio');
+		this.music.setAttribute('src', 'backgroundMusic.mp3');
+		this.music.setAttribute('autoplay', 'autoplay');
+		this.music.Play();//for other than Chrome its play()
 	};
 
 	/**
@@ -60,21 +69,18 @@ window.Game = (function() {
 
 	Game.prototype.updateScore = function () {
 		if((this.obstacle1Made && !this.obstacle1Scored &&
-			this.player.pos.x > this.obstacleHi1.higherRight.x )){
-			
-			console.log(this.player.pos.x);
-			console.log(this.obstacleHi1.higherRight.x);
+			this.player.pos.x > this.obstacleHi1.higherRight.x &&
+			this.obstacleHi1.higherLeft.x !== 0)){
+
 			this.score++;
 			this.obstacle1Scored = true;
-			console.log("score: " + this.score);
 		}
 		else if(this.obstacle2Made && !this.obstacle2Scored &&
-			this.player.pos.x > this.obstacleHi2.higherRight.x) {
+			this.player.pos.x > this.obstacleHi2.higherRight.x &&
+			this.obstacleHi2.higherLeft.x !== 0) {
 			
 			this.score++;
 			this.obstacle2Scored = true;
-
-			console.log("score: " + this.score);
 		}
 	};
 
@@ -131,6 +137,7 @@ window.Game = (function() {
 	 * Starts a new game.
 	 */
 	Game.prototype.start = function() {
+		//canvas.clearRect(0, 0, );
 		this.reset();
 
 		// Restart the onFrame loop
@@ -145,6 +152,27 @@ window.Game = (function() {
 	Game.prototype.reset = function() {
 		this.player.reset();
 		this.score = 0;
+		this.restartObstacles();
+	};
+
+	Game.prototype.restartObstacles = function () {
+		if(this.obstacle1Made) {
+			this.obstacleHi1.reset();
+			this.obstacleLo1.reset();
+		}
+		if(this.obstacle2Made) {
+			this.obstacleHi2.reset();
+			this.obstacleLo2.reset();
+		}
+
+		this.obstacle1Made = false;
+		this.obstacle2Made = false;
+		this.obstacle1Scored = false;
+		this.obstacle2Scored = false;
+		this.obstacleHi1 = undefined;
+		this.obstacleLo1 = undefined;
+		this.obstacleHi2 = undefined;
+		this.obstacleLo2 = undefined;
 	};
 
 	/**
@@ -152,9 +180,15 @@ window.Game = (function() {
 	 */
 	Game.prototype.gameover = function() {
 		this.isPlaying = false;
-
 		// Should be refactored into a Scoreboard class.
 		var that = this;
+		if(this.score > this.highScore) {
+			this.highScore = this.score;
+			document.getElementById('Score').textContent = 'A New High Score: ' + this.highScore;
+		} else {
+			document.getElementById('HighScore').textContent = 'High Score: ' + this.highScore;
+			document.getElementById('Score').textContent = 'Your Score: ' + this.score;
+		}
 		var scoreboardEl = this.el.find('.Scoreboard');
 		scoreboardEl
 			.addClass('is-visible')
@@ -165,7 +199,7 @@ window.Game = (function() {
 				});
 	};
 
-	Game.prototype.obstacleCollision = function(lo, hi) {
+	Game.prototype.obstacleCollision = function(lo, hi) {//the values lo and hi are obstacle lo and obstacle hi
 		//check if player hit the higher obstacle
 		//check if the left top of the player hits highter obstacle
 		if(this.player.pos.y < hi.higherLeft.y &&

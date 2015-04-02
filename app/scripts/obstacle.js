@@ -11,13 +11,16 @@ window.Obstacle = (function() {
 		this.el   = el;
 		this.game = game;
 		this.isVisible = true;
-		this.gapPos = { x: WORLD_LENGHT, y: randomNr };	// ATH: Hard coded to be in the middle, need to make this a 
-											// random number that is then mod with hight. Have it this 
-											// as the pssision of the middle of the gap
+		this.gapPos = { x: WORLD_LENGHT, y: randomNr };
 		this.higherLeft  = { x: 0, y: 0};
 		this.higherRight = { x: 0, y: 0};
 		this.lowerLeft   = { x: 0, y: 0};
 		this.lowerRight  = { x: 0, y: 0};
+	};
+
+	Obstacle.prototype.reset = function() {
+		//make the obstacle disappear to the right
+		this.el.css('left', (WORLD_LENGHT * 2) + 'em');
 	};
 
 	Obstacle.prototype.onFrame = function(delta, obstacle) {
