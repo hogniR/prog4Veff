@@ -14,7 +14,7 @@ window.Controls = (function() {
 
     var BUTTONS = {
         0: 'mouse1'
-    }
+    };
 
     /**
      * A singleton class which abstracts all player input,

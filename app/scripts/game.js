@@ -65,7 +65,7 @@ window.Game = (function() {
 			console.log(this.obstacleHi1.higherRight.x);
 			this.score++;
 			this.obstacle1Scored = true;
-			console.log("score: " + this.score);
+			//console.log("score: " + this.score);
 		}
 		else if(this.obstacle2Made && !this.obstacle2Scored &&
 			this.player.pos.x > this.obstacleHi2.higherRight.x) {
@@ -73,7 +73,7 @@ window.Game = (function() {
 			this.score++;
 			this.obstacle2Scored = true;
 
-			console.log("score: " + this.score);
+			//console.log("score: " + this.score);
 		}
 	};
 
