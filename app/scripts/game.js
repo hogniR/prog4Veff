@@ -7,6 +7,7 @@ window.Game = (function() {
 	 * @constructor
 	 */
 	var Game = function(el) {
+		this.music = undefined;
 		this.startMusic();
 		this.highScore = 0;
 		this.obstacle1Made = false;
@@ -39,14 +40,6 @@ window.Game = (function() {
 		this.musicIsOn = false;
 	}
 
-	document.getElementById("mute").onclick = function () {
-		if(this.musicIsOn) {
-			this.stopMusic();
-		} else {
-			this.music.play();
-		}
-	}
-
 	/**
 	 * Runs every frame. Calculates a delta and allows each game
 	 * entity to update itself.
@@ -56,6 +49,15 @@ window.Game = (function() {
 		if (!this.isPlaying) {
 			return;
 		}
+
+		document.getElementsByClassName("Mute")[0].onclick = function () {
+			if(this.musicIsOn) {
+				this.stopMusic();
+			} else {
+				this.music.play();
+			}
+		}
+		
 		this.spawnObstacles();
 		this.updateScore();
 
